@@ -11,10 +11,10 @@
 * GitHub
 
 ## Diseño de entidades
-![album-class-diagram](https://github.com/vpaniego/APAW-ECP2-VanesaPaniego/blob/master/docs/APAW-ECP2-DiagramaClases-Album.png)
+![album-class-diagram](https://github.com/vpaniego/APAW-ECP2-VanesaPaniego/blob/develop/docs/APAW-ECP2-DiagramaClases-Album.png)
 
 ## Arquitectura
-![album-entities-class-diagram](https://github.com/vpaniego/APAW-ECP2-VanesaPaniego/blob/master/docs/APAW-ECP2-ArquitecturaClases-Album.png)
+![album-entities-class-diagram](https://github.com/vpaniego/APAW-ECP2-VanesaPaniego/blob/develop/docs/APAW-ECP2-ArquitecturaClases-Album.png)
 
 ### Responsabilidades
 #### Dispatcher
