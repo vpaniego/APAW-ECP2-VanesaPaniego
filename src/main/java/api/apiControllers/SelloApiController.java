@@ -19,7 +19,7 @@ public class SelloApiController {
 
     public void validate(Object property, String message){
         if(property == null){
-            throw new ArgumentNotValidException(message + "is NULL");
+            throw new ArgumentNotValidException(message + " is NULL");
         }
 
     }
