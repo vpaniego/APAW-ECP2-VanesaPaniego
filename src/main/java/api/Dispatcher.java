@@ -25,7 +25,8 @@ public class Dispatcher {
                     this.doPost(request, response);
                     break;
                 case GET:
-                    throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+                    this.doGet(request, response);
+                    break;
                 case PUT:
                     this.doPut(request, response);
                     break;
@@ -64,6 +65,14 @@ public class Dispatcher {
             this.selloApiController.update(request.getPath(1), (SelloDto) request.getBody());
         } else {
             throw new RequestInvalidException("method error: " + request.getMethod());
+        }
+    }
+
+    private void doGet(HttpRequest request, HttpResponse response) {
+        if (request.isEqualsPath(SelloApiController.SELLOS)) {
+            response.setBody(this.selloApiController.readAll());
+        } else {
+            throw new RequestInvalidException("method error: " + request.getMethod() + ' ' + request.getPath());
         }
     }
 }

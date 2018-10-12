@@ -2,7 +2,10 @@ package api.dtos;
 
 public class SelloDto {
 
+    private String id;
+
     private String nombre;
+
     private String sede;
 
     public SelloDto(String nombre, String sede) {
@@ -26,10 +29,19 @@ public class SelloDto {
         this.sede = sede;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "SelloDto{" +
-                "nombre='" + nombre + '\'' +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
                 ", sede='" + sede + '\'' +
                 '}';
     }
