@@ -13,7 +13,7 @@ public class AlbumDto {
     private Genero genero;
     private String selloId;
 
-    public AlbumDto(String nombre, String artista, LocalDateTime fechaEdicion, Integer numPistas, Genero genero, String selloId){
+    public AlbumDto(String nombre, String artista, LocalDateTime fechaEdicion, Integer numPistas, Genero genero, String selloId) {
         this.nombre = nombre;
         this.artista = artista;
         this.fechaEdicion = fechaEdicion;
@@ -69,7 +69,6 @@ public class AlbumDto {
     public void setSelloId(String selloId) {
         this.selloId = selloId;
     }
-
 
     @Override
     public String toString() {

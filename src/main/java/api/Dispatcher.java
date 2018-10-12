@@ -17,7 +17,6 @@ public class Dispatcher {
 
     private AlbumApiController albumApiController = new AlbumApiController();
 
-
     public void submit(HttpRequest request, HttpResponse response) {
         String ERROR_MESSAGE = "{'error':'%S'}";
         try {
@@ -53,7 +52,7 @@ public class Dispatcher {
     private void doPost(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(SelloApiController.SELLOS)) {
             response.setBody(this.selloApiController.create((SelloDto) request.getBody()));
-        } else if(request.isEqualsPath(AlbumApiController.ALBUMES)) {
+        } else if (request.isEqualsPath(AlbumApiController.ALBUMES)) {
             response.setBody(this.albumApiController.create((AlbumDto) request.getBody()));
         } else {
             throw new RequestInvalidException("method error: " + request.getMethod());
@@ -62,7 +61,7 @@ public class Dispatcher {
 
     private void doPut(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(SelloApiController.SELLOS + SelloApiController.ID_ID)) {
-            this.selloApiController.update(request.getPath(1), (SelloDto)request.getBody());
+            this.selloApiController.update(request.getPath(1), (SelloDto) request.getBody());
         } else {
             throw new RequestInvalidException("method error: " + request.getMethod());
         }

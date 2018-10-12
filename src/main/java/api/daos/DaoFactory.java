@@ -16,6 +16,4 @@ public abstract class DaoFactory {
     public abstract SelloDao getSelloDao();
 
     public abstract AlbumDao getAlbumDao();
-
-
 }

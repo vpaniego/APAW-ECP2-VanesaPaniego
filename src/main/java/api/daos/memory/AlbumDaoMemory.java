@@ -4,7 +4,6 @@ import api.daos.AlbumDao;
 import api.entities.Album;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class AlbumDaoMemory extends GenericDaoMemory<Album> implements AlbumDao {
 
@@ -20,6 +19,5 @@ public class AlbumDaoMemory extends GenericDaoMemory<Album> implements AlbumDao 
     @Override
     public void setId(Album album, String id) {
         album.setId(id);
-
     }
 }
