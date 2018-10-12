@@ -38,7 +38,7 @@
 ### POST /sellos
 #### Parámetros del cuerpo
 - `nombre`: String (**requerido**)
-- `sede`: String
+- `sede`: String (**requerido**)
 #### Respuesta
 - 200 OK 
   - `id`: String
@@ -72,7 +72,7 @@
 - 200 OK
   - `[ {id:String,nombre:String} ]`
 ---
-### PATH /albumes/{id}/genero
+### PATCH /albumes/{id}/genero
 #### Parámetros del cuerpo
 - `genero`: String (**requerido**)
 #### Respuesta
