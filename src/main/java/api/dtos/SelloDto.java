@@ -2,7 +2,18 @@ package api.dtos;
 
 public class SelloDto {
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    private String id;
+
     private String nombre;
+
     private String sede;
 
     public SelloDto(String nombre, String sede) {

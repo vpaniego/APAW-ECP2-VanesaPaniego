@@ -2,7 +2,10 @@ package api.apiControllers;
 
 import api.businessControllers.SelloBusinessController;
 import api.dtos.SelloDto;
+import api.dtos.SelloIdNombreDto;
 import api.exceptions.ArgumentNotValidException;
+
+import java.util.List;
 
 public class SelloApiController {
 
@@ -29,5 +32,9 @@ public class SelloApiController {
         if (property == null) {
             throw new ArgumentNotValidException(message + " is NULL");
         }
+    }
+
+    public List<SelloIdNombreDto> readAll() {
+        return selloBusinessController.readAll();
     }
 }

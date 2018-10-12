@@ -4,6 +4,7 @@ import api.apiControllers.SelloApiController;
 import api.daos.DaoFactory;
 import api.daos.memory.DaoMemoryFactory;
 import api.dtos.SelloDto;
+import api.dtos.SelloIdNombreDto;
 import http.Client;
 import http.HttpException;
 import http.HttpRequest;
@@ -11,8 +12,11 @@ import http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SelloIT {
 
@@ -75,5 +79,24 @@ public class SelloIT {
     private String createSello() {
         HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).body(new SelloDto("Stax Records", "Memphis, Tennessee")).post();
         return (String) new Client().submit(request).getBody();
+    }
+
+    @Test
+    void testReadAll(){
+        for (int i = 0; i < 10; i++) {
+            this.createSello("Sello"+i, "Sede"+i);
+        }
+        HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).get();
+        List<SelloIdNombreDto> themes = (List<SelloIdNombreDto>) new Client().submit(request).getBody();
+        assertTrue(themes.size()>=10);
+    }
+
+    private void createSello(String selloNombre, String selloSede) {
+        String selloId = this.createSello();
+        SelloDto selloDto = new SelloDto(selloNombre, selloSede);
+        selloDto.setId(selloId);
+        HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS)
+                .body(selloDto).post();
+        new Client().submit(request);
     }
 }
