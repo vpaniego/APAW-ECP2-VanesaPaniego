@@ -12,15 +12,7 @@ public class Album {
     private Genero genero;
     private Sello sello;
 
-    public Album() {
-    }
-
-    public Album(String id) {
-        this.id = id;
-    }
-
-    public Album(String id, String nombre, String artista, LocalDateTime fechaEdicion, Integer numPistas, Genero genero, Sello sello) {
-        this.id = id;
+    public Album(String nombre, String artista, LocalDateTime fechaEdicion, Integer numPistas, Genero genero, Sello sello) {
         this.nombre = nombre;
         this.artista = artista;
         this.fechaEdicion = fechaEdicion;
@@ -28,13 +20,6 @@ public class Album {
         this.genero = genero;
         this.sello = sello;
     }
-
-    public Album(String id, String nombre, Genero genero, Sello sello) {
-        this.nombre = nombre;
-        this.genero = genero;
-        this.sello = sello;
-    }
-
 
     public String getId() {
         return id;

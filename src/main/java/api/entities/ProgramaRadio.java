@@ -12,23 +12,11 @@ public class ProgramaRadio {
     private DayOfWeek diaEmision;
     private List<Album> albumes;
 
-    public ProgramaRadio() {
-    }
-
-    public ProgramaRadio(String id) {
-        this.id = id;
-        this.nocturno = Boolean.FALSE;
-        this.nombre = "Default";
-        this.diaEmision = DayOfWeek.FRIDAY;
-        this.albumes = new ArrayList<Album>();
-    }
-
-    public ProgramaRadio(String id, boolean nocturno, String nombre, DayOfWeek diaEmision, List<Album> albumes) {
-        this.id = id;
+    public ProgramaRadio(boolean nocturno, String nombre, DayOfWeek diaEmision) {
         this.nocturno = nocturno;
         this.nombre = nombre;
         this.diaEmision = diaEmision;
-        this.albumes = albumes;
+        this.albumes = new ArrayList<Album>();
     }
 
     public String getId() {
@@ -69,6 +57,18 @@ public class ProgramaRadio {
 
     public void setAlbumes(List<Album> albumes) {
         this.albumes = albumes;
+    }
+
+    public void addAlbum(Album album) {
+        assert album != null;
+        assert albumes != null;
+        this.albumes.add(album);
+    }
+
+    public void removeAlbum(Album album) {
+        assert album != null;
+        assert albumes != null;
+        this.albumes.remove(album);
     }
 
     @Override

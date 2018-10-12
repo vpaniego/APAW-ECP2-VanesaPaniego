@@ -9,18 +9,10 @@ public class EdicionEspecial {
     private String nombre;
     private String artista;
 
-    public EdicionEspecial() {
-    }
-
-    public EdicionEspecial(String id) {
-        this.id = id;
-    }
-
-    public EdicionEspecial(String id, String nombre, LocalDate fechaPublicacion, String artista) {
-        this.id = id;
+    public EdicionEspecial(String nombre, String artista) {
         this.nombre = nombre;
-        this.fechaPublicacion = fechaPublicacion;
         this.artista = artista;
+        this.fechaPublicacion = LocalDate.now();
     }
 
     public String getId() {

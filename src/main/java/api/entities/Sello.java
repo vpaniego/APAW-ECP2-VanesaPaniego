@@ -6,8 +6,7 @@ public class Sello {
     private String nombre;
     private String sede;
 
-    public Sello(String id, String nombre, String sede) {
-        this.id = id;
+    public Sello(String nombre, String sede) {
         this.nombre = nombre;
         this.sede = sede;
     }
