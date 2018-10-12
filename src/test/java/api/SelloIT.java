@@ -25,6 +25,20 @@ public class SelloIT {
         DaoFactory.setFactory(new DaoMemoryFactory());
     }
 
+    private String createSello() {
+        HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).body(new SelloDto("Stax Records", "Memphis, Tennessee")).post();
+        return (String) new Client().submit(request).getBody();
+    }
+
+    private void createSello(String selloNombre, String selloSede) {
+        String selloId = this.createSello();
+        SelloDto selloDto = new SelloDto(selloNombre, selloSede);
+        selloDto.setId(selloId);
+        HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS)
+                .body(selloDto).post();
+        new Client().submit(request);
+    }
+
     @Test
     void testCreateSello() {
         this.createSello();
@@ -76,27 +90,13 @@ public class SelloIT {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
 
-    private String createSello() {
-        HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).body(new SelloDto("Stax Records", "Memphis, Tennessee")).post();
-        return (String) new Client().submit(request).getBody();
-    }
-
     @Test
-    void testReadAll(){
+    void testReadAll() {
         for (int i = 0; i < 10; i++) {
-            this.createSello("Sello"+i, "Sede"+i);
+            this.createSello("Sello" + i, "Sede" + i);
         }
         HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).get();
         List<SelloIdNombreDto> themes = (List<SelloIdNombreDto>) new Client().submit(request).getBody();
-        assertTrue(themes.size()>=10);
-    }
-
-    private void createSello(String selloNombre, String selloSede) {
-        String selloId = this.createSello();
-        SelloDto selloDto = new SelloDto(selloNombre, selloSede);
-        selloDto.setId(selloId);
-        HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS)
-                .body(selloDto).post();
-        new Client().submit(request);
+        assertTrue(themes.size() >= 10);
     }
 }

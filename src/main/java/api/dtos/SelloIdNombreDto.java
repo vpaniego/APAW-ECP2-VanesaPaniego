@@ -29,5 +29,11 @@ public class SelloIdNombreDto {
         this.nombre = nombre;
     }
 
-
+    @Override
+    public String toString() {
+        return "SelloIdNombreDto{" +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                '}';
+    }
 }
