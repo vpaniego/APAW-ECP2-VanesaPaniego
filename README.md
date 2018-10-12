@@ -44,5 +44,63 @@
   - `id`: String
 - 403 BAD_REQUEST
 ---
+### PUT /sellos/{id}
+#### Parámetros del cuerpo
+- `id`: String (**requerido**)
+- `sede`: String
+#### Respuesta
+- 200 OK
+- 403 BAD_REQUEST
+- 404 NOT_FOUND
+---
+### POST /albumes
+#### Parámetros del cuerpo
+- `nombre`: String (**requerido**)
+- `artista`: String (**requerido**)
+- `fechaEdicion`: LocalDateTime (**requerido**)
+- `numPistas`: Integer (**requerido**)
+- `genero`: Genero (**requerido**)
+- `selloId`: String (**requerido**)
+#### Respuesta
+- 200 OK
+  - `id`: String
+- 403 BAD_REQUEST
+- 404 NOT_FOUND
+---
+### GET /sellos
+#### Respuesta
+- 200 OK
+  - `[ {id:String,nombre:String} ]`
+---
+### PATH /albumes/{id}/genero
+#### Parámetros del cuerpo
+- `genero`: String (**requerido**)
+#### Respuesta
+- 200 OK
+- 403 BAD_REQUEST
+- 404 NOT_FOUND
+---
+### POST /programas-radio
+#### Parámetros del cuerpo
+- `nombre`: String (**requerido**)
+- `nocturno`: Boolean (**requerido**)
+- `diaEmision`: String (**requerido**)
+- `albumId`: String (**requerido**)
+#### Respuesta
+- 200 OK
+  - `id`: String
+- 403 BAD_REQUEST
+- 404 NOT_FOUND
+---
+### GET /albumes/search?q=numPistas:>=7
+#### Respuesta
+- 200 OK
+  - `[ {id:String,nombre:String,artista:String,numPistas:Integer} ]`
+- 403 BAD_REQUEST
+---
+### DELETE /sellos/{id}
+#### Respuesta
+- 200 OK
+---
 
 ##### Autora: Vanesa Paniego Seco.
