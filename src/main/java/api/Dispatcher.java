@@ -1,6 +1,8 @@
 package api;
 
+import api.apiControllers.AlbumApiController;
 import api.apiControllers.SelloApiController;
+import api.dtos.AlbumDto;
 import api.dtos.SelloDto;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
@@ -12,6 +14,9 @@ import http.HttpStatus;
 public class Dispatcher {
 
     private SelloApiController selloApiController = new SelloApiController();
+
+    private AlbumApiController albumApiController = new AlbumApiController();
+
 
     public void submit(HttpRequest request, HttpResponse response) {
         String ERROR_MESSAGE = "{'error':'%S'}";
@@ -48,6 +53,8 @@ public class Dispatcher {
     private void doPost(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(SelloApiController.SELLOS)) {
             response.setBody(this.selloApiController.create((SelloDto) request.getBody()));
+        } else if(request.isEqualsPath(AlbumApiController.ALBUMES)) {
+            response.setBody(this.albumApiController.create((AlbumDto) request.getBody()));
         } else {
             throw new RequestInvalidException("method error: " + request.getMethod());
         }
