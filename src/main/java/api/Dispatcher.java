@@ -3,6 +3,7 @@ package api;
 import api.apiControllers.SelloApiController;
 import api.dtos.SelloDto;
 import api.exceptions.ArgumentNotValidException;
+import api.exceptions.NotFoundException;
 import api.exceptions.RequestInvalidException;
 import http.HttpRequest;
 import http.HttpResponse;
@@ -22,7 +23,8 @@ public class Dispatcher {
                 case GET:
                     throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
                 case PUT:
-                    throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+                    this.doPut(request, response);
+                    break;
                 case PATCH:
                     throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
                 case DELETE:
@@ -33,6 +35,9 @@ public class Dispatcher {
         } catch (ArgumentNotValidException | RequestInvalidException exception) {
             response.setBody(String.format(ERROR_MESSAGE, exception.getMessage()));
             response.setStatus(HttpStatus.BAD_REQUEST);
+        } catch (NotFoundException exception) {
+            response.setBody(String.format(ERROR_MESSAGE, exception.getMessage()));
+            response.setStatus(HttpStatus.NOT_FOUND);
         } catch (Exception exception) {  // Unexpected
             exception.printStackTrace();
             response.setBody(String.format(ERROR_MESSAGE, exception));
@@ -43,6 +48,14 @@ public class Dispatcher {
     private void doPost(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(SelloApiController.SELLOS)) {
             response.setBody(this.selloApiController.create((SelloDto) request.getBody()));
+        } else {
+            throw new RequestInvalidException("method error: " + request.getMethod());
+        }
+    }
+
+    private void doPut(HttpRequest request, HttpResponse response) {
+        if (request.isEqualsPath(SelloApiController.SELLOS + SelloApiController.ID_ID)) {
+            this.selloApiController.update(request.getPath(1), (SelloDto)request.getBody());
         } else {
             throw new RequestInvalidException("method error: " + request.getMethod());
         }
