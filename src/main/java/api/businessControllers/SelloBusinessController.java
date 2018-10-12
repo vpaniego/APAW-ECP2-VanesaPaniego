@@ -6,7 +6,7 @@ import api.entities.Sello;
 
 public class SelloBusinessController {
 
-    public String create(SelloDto selloDto){
+    public String create(SelloDto selloDto) {
         Sello sello = new Sello(selloDto.getNombre(), selloDto.getSede());
         DaoFactory.getFactory().getSelloDao().save(sello);
         return sello.getId();

@@ -5,7 +5,7 @@ public class SelloDto {
     private String nombre;
     private String sede;
 
-    public SelloDto(String nombre, String sede){
+    public SelloDto(String nombre, String sede) {
         this.nombre = nombre;
         this.sede = sede;
     }
@@ -26,4 +26,11 @@ public class SelloDto {
         this.sede = sede;
     }
 
+    @Override
+    public String toString() {
+        return "SelloDto{" +
+                "nombre='" + nombre + '\'' +
+                ", sede='" + sede + '\'' +
+                '}';
+    }
 }

@@ -41,12 +41,10 @@ public class Dispatcher {
     }
 
     private void doPost(HttpRequest request, HttpResponse response) {
-        //TODO. Crear primero SelloApiController
         if (request.isEqualsPath(SelloApiController.SELLOS)) {
             response.setBody(this.selloApiController.create((SelloDto) request.getBody()));
         } else {
             throw new RequestInvalidException("method error: " + request.getMethod());
         }
     }
-
 }

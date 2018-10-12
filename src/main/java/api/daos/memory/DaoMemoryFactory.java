@@ -14,5 +14,4 @@ public class DaoMemoryFactory extends DaoFactory {
         }
         return selloDao;
     }
-
 }

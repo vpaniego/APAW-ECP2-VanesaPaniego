@@ -7,7 +7,6 @@ import api.exceptions.ArgumentNotValidException;
 public class SelloApiController {
 
     public static final String SELLOS = "/sellos";
-
     private SelloBusinessController selloBusinessController = new SelloBusinessController();
 
     public String create(SelloDto selloDto) {
@@ -17,11 +16,9 @@ public class SelloApiController {
         return this.selloBusinessController.create(selloDto);
     }
 
-    public void validate(Object property, String message){
-        if(property == null){
+    public void validate(Object property, String message) {
+        if (property == null) {
             throw new ArgumentNotValidException(message + " is NULL");
         }
-
     }
-
 }
