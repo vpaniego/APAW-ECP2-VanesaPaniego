@@ -33,7 +33,7 @@ public class AlbumIT {
     }
 
     @Test
-    void createAlbum() {
+    void testCreateAlbum() {
         String selloId = this.createSello();
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES)
                 .body(new AlbumDto("Here are The Sonics", "The Sonics", LocalDateTime.of(1965, Month.MARCH, 5, 12, 30, 57), 12, Genero.GARAGE, selloId)).post();
@@ -104,4 +104,38 @@ public class AlbumIT {
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
+
+    private String createAlbum(){
+        String selloId = this.createSello();
+        HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES)
+                .body(new AlbumDto("Here are The Sonics", "The Sonics", LocalDateTime.of(1965, Month.MARCH, 5, 12, 30, 57), 12, Genero.GARAGE, selloId)).post();
+        return (String) new Client().submit(request).getBody();
+    }
+
+    @Test
+    void testUpdateAlbumGenero(){
+        String albumId = this.createAlbum();
+        HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES).path(AlbumApiController.ID_ID)
+                .expandPath(albumId).path(AlbumApiController.GENERO).body(Genero.ROCK.name()).patch();
+        new Client().submit(request);
+    }
+
+    @Test
+    void testUpdateAlbumGeneroWithoutGenero(){
+        String albumId = this.createAlbum();
+        HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES).path(AlbumApiController.ID_ID)
+                .expandPath(albumId).path(AlbumApiController.GENERO).body(null).patch();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+    }
+
+    @Test
+    void testUpdateAlbumGeneroIdNotFound(){
+        String albumId = "c4ca4238a0b923820dcc509a6f75849b";
+        HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES).path(AlbumApiController.ID_ID)
+                .expandPath(albumId).path(AlbumApiController.GENERO).body(Genero.ROCK.name()).patch();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
+    }
+
 }

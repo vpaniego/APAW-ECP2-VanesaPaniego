@@ -31,7 +31,8 @@ public class Dispatcher {
                     this.doPut(request, response);
                     break;
                 case PATCH:
-                    throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+                    this.doPatch(request, response);
+                    break;
                 case DELETE:
                     throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
                 default:
@@ -75,4 +76,13 @@ public class Dispatcher {
             throw new RequestInvalidException("method error: " + request.getMethod() + ' ' + request.getPath());
         }
     }
+
+    private void doPatch(HttpRequest request, HttpResponse response) {
+        if (request.isEqualsPath(AlbumApiController.ALBUMES + AlbumApiController.ID_ID + AlbumApiController.GENERO)) {
+            this.albumApiController.updateGenero(request.getPath(1), (String) request.getBody());
+        } else {
+            throw new RequestInvalidException("method error: " + request.getMethod());
+        }
+    }
+
 }
