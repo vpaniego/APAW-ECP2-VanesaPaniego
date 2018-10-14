@@ -2,7 +2,10 @@ package api.apiControllers;
 
 import api.businessControllers.AlbumBusinessController;
 import api.dtos.AlbumDto;
+import api.dtos.AlbumIdNombreArtistaNumPistaDto;
 import api.exceptions.ArgumentNotValidException;
+
+import java.util.List;
 
 public class AlbumApiController {
 
@@ -11,6 +14,8 @@ public class AlbumApiController {
     public static final String ID_ID = "/{id}";
 
     public static final String GENERO = "/genero";
+
+    public static final String SEARCH = "/search";
 
     private AlbumBusinessController albumBusinessController = new AlbumBusinessController();
 
@@ -28,6 +33,14 @@ public class AlbumApiController {
     public void updateGenero(String albumId, String genero) {
         this.validate(genero, "Genero");
         this.albumBusinessController.updateGenero(albumId, genero);
+    }
+
+    public List<AlbumIdNombreArtistaNumPistaDto> find(String query) {
+        this.validate(query, "query param q");
+        if (!"numPistas".equals(query.split(":>=")[0])) {
+            throw new ArgumentNotValidException("query param q is incorrect, missing 'numPistas:>='");
+        }
+        return this.albumBusinessController.findByNumPistasGreaterThanEqual(Double.valueOf(query.split(":>=")[1]));
     }
 
     public void validate(Object property, String message) {
