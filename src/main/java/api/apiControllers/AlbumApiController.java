@@ -25,14 +25,14 @@ public class AlbumApiController {
         return this.albumBusinessController.create(albumDto);
     }
 
+    public void updateGenero(String albumId, String genero) {
+        this.validate(genero, "Genero");
+        this.albumBusinessController.updateGenero(albumId, genero);
+    }
+
     public void validate(Object property, String message) {
         if (property == null) {
             throw new ArgumentNotValidException(message + " is NULL");
         }
-    }
-
-    public void updateGenero(String albumId, String genero) {
-        this.validate(genero, "Genero");
-        this.albumBusinessController.updateGenero(albumId, genero);
     }
 }

@@ -1,8 +1,10 @@
 package api;
 
 import api.apiControllers.AlbumApiController;
+import api.apiControllers.ProgramaRadioApiController;
 import api.apiControllers.SelloApiController;
 import api.dtos.AlbumDto;
+import api.dtos.ProgramaRadioDto;
 import api.dtos.SelloDto;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
@@ -20,6 +22,8 @@ public class Dispatcher {
     private SelloApiController selloApiController = new SelloApiController();
 
     private AlbumApiController albumApiController = new AlbumApiController();
+
+    private ProgramaRadioApiController programaRadioApiController = new ProgramaRadioApiController();
 
     public void submit(HttpRequest request, HttpResponse response) {
         String ERROR_MESSAGE = "{'error':'%S'}";
@@ -60,6 +64,8 @@ public class Dispatcher {
             response.setBody(this.selloApiController.create((SelloDto) request.getBody()));
         } else if (request.isEqualsPath(AlbumApiController.ALBUMES)) {
             response.setBody(this.albumApiController.create((AlbumDto) request.getBody()));
+        } else if(request.isEqualsPath(ProgramaRadioApiController.PROGRAMAS_RADIO)){
+            response.setBody(this.programaRadioApiController.create((ProgramaRadioDto) request.getBody()));
         } else {
             throw new RequestInvalidException(METHOD_ERROR + request.getMethod());
         }

@@ -2,6 +2,7 @@ package api.daos.memory;
 
 import api.daos.AlbumDao;
 import api.daos.DaoFactory;
+import api.daos.ProgramaRadioDao;
 import api.daos.SelloDao;
 
 public class DaoMemoryFactory extends DaoFactory {
@@ -9,6 +10,8 @@ public class DaoMemoryFactory extends DaoFactory {
     private SelloDao selloDao;
 
     private AlbumDao albumDao;
+
+    private ProgramaRadioDao programaRadioDao;
 
     @Override
     public SelloDao getSelloDao() {
@@ -26,4 +29,11 @@ public class DaoMemoryFactory extends DaoFactory {
         return albumDao;
     }
 
+    @Override
+    public ProgramaRadioDao getProgramaRadioDao() {
+        if(programaRadioDao == null){
+            programaRadioDao = new ProgramaRadioDaoMemory();
+        }
+        return programaRadioDao;
+    }
 }
