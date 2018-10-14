@@ -6,7 +6,11 @@ import api.exceptions.ArgumentNotValidException;
 
 public class AlbumApiController {
 
-    public static final String ALBUMES = "albumes";
+    public static final String ALBUMES = "/albumes";
+
+    public static final String ID_ID = "/{id}";
+
+    public static final String GENERO = "/genero";
 
     private AlbumBusinessController albumBusinessController = new AlbumBusinessController();
 
@@ -25,5 +29,10 @@ public class AlbumApiController {
         if (property == null) {
             throw new ArgumentNotValidException(message + " is NULL");
         }
+    }
+
+    public void updateGenero(String albumId, String genero) {
+        this.validate(genero, "Genero");
+        this.albumBusinessController.updateGenero(albumId, genero);
     }
 }
