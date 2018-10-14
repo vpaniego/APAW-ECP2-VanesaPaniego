@@ -91,6 +91,4 @@ public class ProgramaRadioIT {
                 .body(new AlbumDto("Introducing The Sonics", "The Sonics", LocalDateTime.of(1967, Month.MARCH, 10, 23, 12, 11), 12, Genero.GARAGE, selloId)).post();
         return (String) new Client().submit(request).getBody();
     }
-
-
 }

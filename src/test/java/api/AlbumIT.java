@@ -137,6 +137,4 @@ public class AlbumIT {
                 .body(new AlbumDto("Here are The Sonics", "The Sonics", LocalDateTime.of(1965, Month.MARCH, 5, 12, 30, 57), 12, Genero.GARAGE, selloId)).post();
         return (String) new Client().submit(request).getBody();
     }
-
-
 }
