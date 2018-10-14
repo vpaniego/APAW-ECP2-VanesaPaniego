@@ -42,7 +42,8 @@ public class Dispatcher {
                     this.doPatch(request);
                     break;
                 case DELETE:
-                    throw new RequestInvalidException(REQUEST_ERROR + request.getMethod() + ' ' + request.getPath());
+                    this.doDelete(request);
+                    break;
                 default:
                     throw new RequestInvalidException(METHOD_ERROR + request.getMethod());
             }
@@ -94,6 +95,14 @@ public class Dispatcher {
             response.setBody(this.albumApiController.find(request.getParams().get("q")));
         } else {
             throw new RequestInvalidException(METHOD_ERROR + request.getMethod() + ' ' + request.getPath());
+        }
+    }
+
+    private void doDelete(HttpRequest request) {
+        if (request.isEqualsPath(SelloApiController.SELLOS + SelloApiController.ID_ID)) {
+            this.selloApiController.delete(request.getPath(1));
+        } else {
+            throw new RequestInvalidException(METHOD_ERROR + request.getMethod());
         }
     }
 }
