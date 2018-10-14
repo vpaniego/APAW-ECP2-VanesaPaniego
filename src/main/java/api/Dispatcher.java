@@ -90,6 +90,8 @@ public class Dispatcher {
     private void doGet(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(SelloApiController.SELLOS)) {
             response.setBody(this.selloApiController.readAll());
+        } else if (request.isEqualsPath(AlbumApiController.ALBUMES + AlbumApiController.SEARCH)) {
+            response.setBody(this.albumApiController.find(request.getParams().get("q")));
         } else {
             throw new RequestInvalidException(METHOD_ERROR + request.getMethod() + ' ' + request.getPath());
         }

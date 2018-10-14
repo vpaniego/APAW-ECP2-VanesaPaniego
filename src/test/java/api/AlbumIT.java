@@ -5,6 +5,7 @@ import api.apiControllers.SelloApiController;
 import api.daos.DaoFactory;
 import api.daos.memory.DaoMemoryFactory;
 import api.dtos.AlbumDto;
+import api.dtos.AlbumIdNombreArtistaNumPistaDto;
 import api.dtos.SelloDto;
 import api.entities.Genero;
 import http.Client;
@@ -16,9 +17,11 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AlbumIT {
 
@@ -125,6 +128,34 @@ public class AlbumIT {
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
         assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
+
+    @Test
+    void testSearchAlbumNumPistas() {
+        String id = this.createAlbum();
+        HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES).path(AlbumApiController.SEARCH)
+                .param("q", "numPistas:>=7").get();
+        List<AlbumIdNombreArtistaNumPistaDto> albumes = (List<AlbumIdNombreArtistaNumPistaDto>) new Client().submit(request).getBody();
+        assertTrue(!albumes.isEmpty());
+    }
+
+    @Test
+    void testSearchAlbumNumPistasWithoutParamQ() {
+        String id = this.createAlbum();
+        HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES).path(AlbumApiController.SEARCH)
+                .param(null, "numPistas:>=7").get();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+    }
+
+    @Test
+    void testSearchAlbumNumPistasParamError() {
+        String id = this.createAlbum();
+        HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES).path(AlbumApiController.SEARCH)
+                .param("q", "error:>=7").get();
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+    }
+
 
     private String createSello() {
         HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).body(new SelloDto("Sun Studio", "Memphis, Tennessee")).post();

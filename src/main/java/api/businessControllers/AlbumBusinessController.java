@@ -2,10 +2,14 @@ package api.businessControllers;
 
 import api.daos.DaoFactory;
 import api.dtos.AlbumDto;
+import api.dtos.AlbumIdNombreArtistaNumPistaDto;
 import api.entities.Album;
 import api.entities.Genero;
 import api.entities.Sello;
 import api.exceptions.NotFoundException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AlbumBusinessController {
 
@@ -21,5 +25,13 @@ public class AlbumBusinessController {
         Genero generoToUpadte = Genero.valueOf(genero);
         album.setGenero(generoToUpadte);
         DaoFactory.getFactory().getAlbumDao().save(album);
+    }
+
+    public List<AlbumIdNombreArtistaNumPistaDto> findByNumPistasGreaterThanEqual(Double value) {
+        return DaoFactory.getFactory().getAlbumDao().findAll().stream()
+                .filter(album -> album.getNumPistas() >= value)
+                .map(AlbumIdNombreArtistaNumPistaDto::new)
+                .collect(Collectors.toList());
+
     }
 }
