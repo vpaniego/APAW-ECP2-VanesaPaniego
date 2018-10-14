@@ -27,11 +27,6 @@ public class AlbumIT {
         DaoFactory.setFactory(new DaoMemoryFactory());
     }
 
-    private String createSello() {
-        HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).body(new SelloDto("Sun Studio", "Memphis, Tennessee")).post();
-        return (String) new Client().submit(request).getBody();
-    }
-
     @Test
     void testCreateAlbum() {
         String selloId = this.createSello();
@@ -48,7 +43,7 @@ public class AlbumIT {
     }
 
     @Test
-    void createAlbumSelloIdNotFound() {
+    void testCreateAlbumSelloIdNotFound() {
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES)
                 .body(new AlbumDto("Here are The Sonics", "The Sonics", LocalDateTime.of(1965, Month.MARCH, 5, 12, 30, 57), 12, Genero.GARAGE, "c4ca4238a0b923820dcc509a6f75849b")).post();
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
@@ -56,7 +51,7 @@ public class AlbumIT {
     }
 
     @Test
-    void createAlbumWithoutGenero() {
+    void testCreateAlbumWithoutGenero() {
         String selloId = this.createSello();
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES)
                 .body(new AlbumDto("Here are The Sonics", "The Sonics", LocalDateTime.of(1965, Month.MARCH, 5, 12, 30, 57), 12, null, selloId)).post();
@@ -66,7 +61,7 @@ public class AlbumIT {
     }
 
     @Test
-    void createAlbumWithoutNombre() {
+    void testCreateAlbumWithoutNombre() {
         String selloId = this.createSello();
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES)
                 .body(new AlbumDto(null, "The Sonics", LocalDateTime.of(1965, Month.MARCH, 5, 12, 30, 57), 12, Genero.GARAGE, selloId)).post();
@@ -76,7 +71,7 @@ public class AlbumIT {
     }
 
     @Test
-    void createAlbumWithoutArtista() {
+    void testCreateAlbumWithoutArtista() {
         String selloId = this.createSello();
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES)
                 .body(new AlbumDto("Here are The Sonics", null, LocalDateTime.of(1965, Month.MARCH, 5, 12, 30, 57), 12, Genero.GARAGE, selloId)).post();
@@ -86,7 +81,7 @@ public class AlbumIT {
     }
 
     @Test
-    void createAlbumWithoutFechaEdicion() {
+    void testCreateAlbumWithoutFechaEdicion() {
         String selloId = this.createSello();
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES)
                 .body(new AlbumDto("Here are The Sonics", "The Sonics", null, 12, null, selloId)).post();
@@ -96,7 +91,7 @@ public class AlbumIT {
     }
 
     @Test
-    void createAlbumWithoutNumPistas() {
+    void testCreateAlbumWithoutNumPistas() {
         String selloId = this.createSello();
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES)
                 .body(new AlbumDto("Here are The Sonics", "The Sonics", LocalDateTime.of(1965, Month.MARCH, 5, 12, 30, 57), null, Genero.GARAGE, selloId)).post();
@@ -105,15 +100,8 @@ public class AlbumIT {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
 
-    private String createAlbum(){
-        String selloId = this.createSello();
-        HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES)
-                .body(new AlbumDto("Here are The Sonics", "The Sonics", LocalDateTime.of(1965, Month.MARCH, 5, 12, 30, 57), 12, Genero.GARAGE, selloId)).post();
-        return (String) new Client().submit(request).getBody();
-    }
-
     @Test
-    void testUpdateAlbumGenero(){
+    void testUpdateAlbumGenero() {
         String albumId = this.createAlbum();
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES).path(AlbumApiController.ID_ID)
                 .expandPath(albumId).path(AlbumApiController.GENERO).body(Genero.ROCK.name()).patch();
@@ -121,7 +109,7 @@ public class AlbumIT {
     }
 
     @Test
-    void testUpdateAlbumGeneroWithoutGenero(){
+    void testUpdateAlbumGeneroWithoutGenero() {
         String albumId = this.createAlbum();
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES).path(AlbumApiController.ID_ID)
                 .expandPath(albumId).path(AlbumApiController.GENERO).body(null).patch();
@@ -130,12 +118,25 @@ public class AlbumIT {
     }
 
     @Test
-    void testUpdateAlbumGeneroIdNotFound(){
+    void testUpdateAlbumGeneroIdNotFound() {
         String albumId = "c4ca4238a0b923820dcc509a6f75849b";
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES).path(AlbumApiController.ID_ID)
                 .expandPath(albumId).path(AlbumApiController.GENERO).body(Genero.ROCK.name()).patch();
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
         assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
+
+    private String createSello() {
+        HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).body(new SelloDto("Sun Studio", "Memphis, Tennessee")).post();
+        return (String) new Client().submit(request).getBody();
+    }
+
+    private String createAlbum() {
+        String selloId = this.createSello();
+        HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES)
+                .body(new AlbumDto("Here are The Sonics", "The Sonics", LocalDateTime.of(1965, Month.MARCH, 5, 12, 30, 57), 12, Genero.GARAGE, selloId)).post();
+        return (String) new Client().submit(request).getBody();
+    }
+
 
 }

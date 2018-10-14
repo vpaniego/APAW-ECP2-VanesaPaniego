@@ -4,7 +4,6 @@ import api.daos.SelloDao;
 import api.entities.Sello;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class SelloDaoMemory extends GenericDaoMemory<Sello> implements SelloDao {
 
