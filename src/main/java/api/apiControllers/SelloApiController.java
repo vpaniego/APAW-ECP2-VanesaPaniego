@@ -37,4 +37,8 @@ public class SelloApiController {
     public List<SelloIdNombreDto> readAll() {
         return selloBusinessController.readAll();
     }
+
+    public void delete(String id) {
+        this.selloBusinessController.delete(id);
+    }
 }

@@ -99,4 +99,17 @@ public class SelloIT {
         List<SelloIdNombreDto> themes = (List<SelloIdNombreDto>) new Client().submit(request).getBody();
         assertTrue(themes.size() >= 10);
     }
+
+    @Test
+    void testDeleteSello() {
+        String id = this.createSello();
+        HttpRequest request1 = HttpRequest.builder().path(SelloApiController.SELLOS).get();
+        int count = ((List<SelloIdNombreDto>) new Client().submit(request1).getBody()).size();
+        HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).path(SelloApiController.ID_ID)
+                .expandPath(id).delete();
+        new Client().submit(request);
+        assertTrue(((List<SelloIdNombreDto>) new Client().submit(request1).getBody()).size() < count);
+
+    }
+
 }
