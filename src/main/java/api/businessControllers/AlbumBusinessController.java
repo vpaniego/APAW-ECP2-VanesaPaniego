@@ -32,6 +32,5 @@ public class AlbumBusinessController {
                 .filter(album -> album.getNumPistas() >= value)
                 .map(AlbumIdNombreArtistaNumPistaDto::new)
                 .collect(Collectors.toList());
-
     }
 }

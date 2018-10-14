@@ -156,7 +156,6 @@ public class AlbumIT {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
 
-
     private String createSello() {
         HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).body(new SelloDto("Sun Studio", "Memphis, Tennessee")).post();
         return (String) new Client().submit(request).getBody();
