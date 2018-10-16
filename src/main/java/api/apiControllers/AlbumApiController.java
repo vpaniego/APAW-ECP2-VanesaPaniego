@@ -3,11 +3,10 @@ package api.apiControllers;
 import api.businessControllers.AlbumBusinessController;
 import api.dtos.AlbumDto;
 import api.dtos.AlbumQueryDto;
-import api.exceptions.ArgumentNotValidException;
 
 import java.util.List;
 
-public class AlbumApiController extends ApiControllerValidateSupport{
+public class AlbumApiController extends ApiControllerValidateSupport {
 
     public static final String ALBUMES = "/albumes";
 

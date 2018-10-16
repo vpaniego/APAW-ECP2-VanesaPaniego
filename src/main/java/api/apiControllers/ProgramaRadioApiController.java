@@ -2,9 +2,8 @@ package api.apiControllers;
 
 import api.businessControllers.ProgramaRadioBusinessController;
 import api.dtos.ProgramaRadioDto;
-import api.exceptions.ArgumentNotValidException;
 
-public class ProgramaRadioApiController extends ApiControllerValidateSupport{
+public class ProgramaRadioApiController extends ApiControllerValidateSupport {
 
     public static final String PROGRAMAS_RADIO = "/programas-radio";
 
