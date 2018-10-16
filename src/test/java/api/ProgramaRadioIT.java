@@ -3,8 +3,6 @@ package api;
 import api.apiControllers.AlbumApiController;
 import api.apiControllers.ProgramaRadioApiController;
 import api.apiControllers.SelloApiController;
-import api.daos.DaoFactory;
-import api.daos.memory.DaoMemoryFactory;
 import api.dtos.AlbumDto;
 import api.dtos.ProgramaRadioDto;
 import api.dtos.SelloDto;
@@ -13,7 +11,6 @@ import http.Client;
 import http.HttpException;
 import http.HttpRequest;
 import http.HttpStatus;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.DayOfWeek;
@@ -24,11 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProgramaRadioIT {
-
-    @BeforeAll
-    static void before() {
-        DaoFactory.setFactory(new DaoMemoryFactory());
-    }
 
     @Test
     void testCreateProgramaRadio() {

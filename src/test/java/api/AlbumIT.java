@@ -2,17 +2,14 @@ package api;
 
 import api.apiControllers.AlbumApiController;
 import api.apiControllers.SelloApiController;
-import api.daos.DaoFactory;
-import api.daos.memory.DaoMemoryFactory;
 import api.dtos.AlbumDto;
-import api.dtos.AlbumIdNombreArtistaNumPistaDto;
+import api.dtos.AlbumQueryDto;
 import api.dtos.SelloDto;
 import api.entities.Genero;
 import http.Client;
 import http.HttpException;
 import http.HttpRequest;
 import http.HttpStatus;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -24,11 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AlbumIT {
-
-    @BeforeAll
-    static void before() {
-        DaoFactory.setFactory(new DaoMemoryFactory());
-    }
 
     @Test
     void testCreateAlbum() {
@@ -134,7 +126,7 @@ public class AlbumIT {
         String id = this.createAlbum();
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES).path(AlbumApiController.SEARCH)
                 .param("q", "numPistas:>=7").get();
-        List<AlbumIdNombreArtistaNumPistaDto> albumes = (List<AlbumIdNombreArtistaNumPistaDto>) new Client().submit(request).getBody();
+        List<AlbumQueryDto> albumes = (List<AlbumQueryDto>) new Client().submit(request).getBody();
         assertTrue(!albumes.isEmpty());
     }
 
