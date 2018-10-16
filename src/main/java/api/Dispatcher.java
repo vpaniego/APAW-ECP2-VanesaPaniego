@@ -1,8 +1,12 @@
 package api;
 
 import api.apiControllers.AlbumApiController;
+import api.apiControllers.ProgramaRadioApiController;
 import api.apiControllers.SelloApiController;
+import api.daos.DaoFactory;
+import api.daos.memory.DaoMemoryFactory;
 import api.dtos.AlbumDto;
+import api.dtos.ProgramaRadioDto;
 import api.dtos.SelloDto;
 import api.exceptions.ArgumentNotValidException;
 import api.exceptions.NotFoundException;
@@ -13,9 +17,19 @@ import http.HttpStatus;
 
 public class Dispatcher {
 
+    static {
+        DaoFactory.setFactory(new DaoMemoryFactory());
+    }
+
+    private static final String REQUEST_ERROR = "request error: ";
+
+    private static final String METHOD_ERROR = "method error: ";
+
     private SelloApiController selloApiController = new SelloApiController();
 
     private AlbumApiController albumApiController = new AlbumApiController();
+
+    private ProgramaRadioApiController programaRadioApiController = new ProgramaRadioApiController();
 
     public void submit(HttpRequest request, HttpResponse response) {
         String ERROR_MESSAGE = "{'error':'%S'}";
@@ -28,14 +42,16 @@ public class Dispatcher {
                     this.doGet(request, response);
                     break;
                 case PUT:
-                    this.doPut(request, response);
+                    this.doPut(request);
                     break;
                 case PATCH:
-                    throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+                    this.doPatch(request);
+                    break;
                 case DELETE:
-                    throw new RequestInvalidException("request error: " + request.getMethod() + ' ' + request.getPath());
+                    this.doDelete(request);
+                    break;
                 default:
-                    throw new RequestInvalidException("method error: " + request.getMethod());
+                    throw new RequestInvalidException(METHOD_ERROR + request.getMethod());
             }
         } catch (ArgumentNotValidException | RequestInvalidException exception) {
             response.setBody(String.format(ERROR_MESSAGE, exception.getMessage()));
@@ -55,24 +71,44 @@ public class Dispatcher {
             response.setBody(this.selloApiController.create((SelloDto) request.getBody()));
         } else if (request.isEqualsPath(AlbumApiController.ALBUMES)) {
             response.setBody(this.albumApiController.create((AlbumDto) request.getBody()));
+        } else if (request.isEqualsPath(ProgramaRadioApiController.PROGRAMAS_RADIO)) {
+            response.setBody(this.programaRadioApiController.create((ProgramaRadioDto) request.getBody()));
         } else {
-            throw new RequestInvalidException("method error: " + request.getMethod());
+            throw new RequestInvalidException(REQUEST_ERROR + request.getMethod());
         }
     }
 
-    private void doPut(HttpRequest request, HttpResponse response) {
+    private void doPut(HttpRequest request) {
         if (request.isEqualsPath(SelloApiController.SELLOS + SelloApiController.ID_ID)) {
             this.selloApiController.update(request.getPath(1), (SelloDto) request.getBody());
         } else {
-            throw new RequestInvalidException("method error: " + request.getMethod());
+            throw new RequestInvalidException(REQUEST_ERROR + request.getMethod());
+        }
+    }
+
+    private void doPatch(HttpRequest request) {
+        if (request.isEqualsPath(AlbumApiController.ALBUMES + AlbumApiController.ID_ID + AlbumApiController.GENERO)) {
+            this.albumApiController.updateGenero(request.getPath(1), (String) request.getBody());
+        } else {
+            throw new RequestInvalidException(REQUEST_ERROR + request.getMethod());
         }
     }
 
     private void doGet(HttpRequest request, HttpResponse response) {
         if (request.isEqualsPath(SelloApiController.SELLOS)) {
             response.setBody(this.selloApiController.readAll());
+        } else if (request.isEqualsPath(AlbumApiController.ALBUMES + AlbumApiController.SEARCH)) {
+            response.setBody(this.albumApiController.find(request.getParams().get("q")));
         } else {
-            throw new RequestInvalidException("method error: " + request.getMethod() + ' ' + request.getPath());
+            throw new RequestInvalidException(REQUEST_ERROR + request.getMethod() + ' ' + request.getPath());
+        }
+    }
+
+    private void doDelete(HttpRequest request) {
+        if (request.isEqualsPath(SelloApiController.SELLOS + SelloApiController.ID_ID)) {
+            this.selloApiController.delete(request.getPath(1));
+        } else {
+            throw new RequestInvalidException(REQUEST_ERROR + request.getMethod());
         }
     }
 }

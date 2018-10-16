@@ -31,4 +31,8 @@ public class SelloBusinessController {
         }
         return sellosIdNombreDtos;
     }
+
+    public void delete(String id) {
+        DaoFactory.getFactory().getSelloDao().deleteById(id);
+    }
 }

@@ -1,15 +1,12 @@
 package api;
 
 import api.apiControllers.SelloApiController;
-import api.daos.DaoFactory;
-import api.daos.memory.DaoMemoryFactory;
 import api.dtos.SelloDto;
 import api.dtos.SelloIdNombreDto;
 import http.Client;
 import http.HttpException;
 import http.HttpRequest;
 import http.HttpStatus;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,11 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SelloIT {
-
-    @BeforeAll
-    static void before() {
-        DaoFactory.setFactory(new DaoMemoryFactory());
-    }
 
     private String createSello() {
         HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).body(new SelloDto("Stax Records", "Memphis, Tennessee")).post();
@@ -99,4 +91,17 @@ public class SelloIT {
         List<SelloIdNombreDto> themes = (List<SelloIdNombreDto>) new Client().submit(request).getBody();
         assertTrue(themes.size() >= 10);
     }
+
+    @Test
+    void testDeleteSello() {
+        String id = this.createSello();
+        HttpRequest request1 = HttpRequest.builder().path(SelloApiController.SELLOS).get();
+        int count = ((List<SelloIdNombreDto>) new Client().submit(request1).getBody()).size();
+        HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).path(SelloApiController.ID_ID)
+                .expandPath(id).delete();
+        new Client().submit(request);
+        assertTrue(((List<SelloIdNombreDto>) new Client().submit(request1).getBody()).size() < count);
+
+    }
+
 }
