@@ -3,6 +3,8 @@ package api;
 import api.apiControllers.AlbumApiController;
 import api.apiControllers.ProgramaRadioApiController;
 import api.apiControllers.SelloApiController;
+import api.daos.DaoFactory;
+import api.daos.memory.DaoMemoryFactory;
 import api.dtos.AlbumDto;
 import api.dtos.ProgramaRadioDto;
 import api.dtos.SelloDto;
@@ -14,6 +16,10 @@ import http.HttpResponse;
 import http.HttpStatus;
 
 public class Dispatcher {
+
+    static {
+        DaoFactory.setFactory(new DaoMemoryFactory());
+    }
 
     private static final String REQUEST_ERROR = "request error: ";
 

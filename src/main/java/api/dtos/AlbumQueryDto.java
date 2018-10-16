@@ -2,7 +2,7 @@ package api.dtos;
 
 import api.entities.Album;
 
-public class AlbumIdNombreArtistaNumPistaDto {
+public class AlbumQueryDto {
 
     private String id;
 
@@ -12,7 +12,7 @@ public class AlbumIdNombreArtistaNumPistaDto {
 
     private Integer numPistas;
 
-    public AlbumIdNombreArtistaNumPistaDto(Album album) {
+    public AlbumQueryDto(Album album) {
         this.id = album.getId();
         this.nombre = album.getNombre();
         this.artista = album.getArtista();
@@ -53,7 +53,7 @@ public class AlbumIdNombreArtistaNumPistaDto {
 
     @Override
     public String toString() {
-        return "AlbumIdNombreArtistaNumPistaDto{" +
+        return "AlbumQueryDto{" +
                 "id='" + id + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", artista='" + artista + '\'' +

@@ -2,12 +2,12 @@ package api.apiControllers;
 
 import api.businessControllers.AlbumBusinessController;
 import api.dtos.AlbumDto;
-import api.dtos.AlbumIdNombreArtistaNumPistaDto;
+import api.dtos.AlbumQueryDto;
 import api.exceptions.ArgumentNotValidException;
 
 import java.util.List;
 
-public class AlbumApiController {
+public class AlbumApiController extends ApiControllerValidateSupport{
 
     public static final String ALBUMES = "/albumes";
 
@@ -20,32 +20,29 @@ public class AlbumApiController {
     private AlbumBusinessController albumBusinessController = new AlbumBusinessController();
 
     public String create(AlbumDto albumDto) {
-        this.validate(albumDto, "albumDto");
-        this.validate(albumDto.getNombre(), "AlbumDto Nombre");
-        this.validate(albumDto.getArtista(), "AlbumDto Artista");
-        this.validate(albumDto.getFechaEdicion(), "AlbumDto Fecha Edicion");
-        this.validate(albumDto.getNumPistas(), "AlbumDto Numero Pistas");
-        this.validate(albumDto.getGenero(), "AlbumDto Genero");
-        this.validate(albumDto.getSelloId(), "AlbumDto Sello Id");
+        this.validate(albumDto);
         return this.albumBusinessController.create(albumDto);
     }
 
     public void updateGenero(String albumId, String genero) {
-        this.validate(genero, "Genero");
+        this.validateNotNull(genero, "Genero");
         this.albumBusinessController.updateGenero(albumId, genero);
     }
 
-    public List<AlbumIdNombreArtistaNumPistaDto> find(String query) {
-        this.validate(query, "query param q");
-        if (!"numPistas".equals(query.split(":>=")[0])) {
-            throw new ArgumentNotValidException("query param q is incorrect, missing 'numPistas:>='");
-        }
+    public List<AlbumQueryDto> find(String query) {
+        this.validateNotNull(query, "query param q");
+        this.validateNotEquals("numPistas", query.split(":>=")[0].toString(), "query param q is incorrect, missing 'numPistas:>='");
         return this.albumBusinessController.findByNumPistasGreaterThanEqual(Double.valueOf(query.split(":>=")[1]));
     }
 
-    public void validate(Object property, String message) {
-        if (property == null) {
-            throw new ArgumentNotValidException(message + " is NULL");
-        }
+    public void validate(Object objectDto) {
+        AlbumDto albumDto = (AlbumDto) objectDto;
+        this.validateNotNull(albumDto, "albumDto");
+        this.validateNotNull(albumDto.getNombre(), "AlbumDto Nombre");
+        this.validateNotNull(albumDto.getArtista(), "AlbumDto Artista");
+        this.validateNotNull(albumDto.getFechaEdicion(), "AlbumDto Fecha Edicion");
+        this.validateNotNull(albumDto.getNumPistas(), "AlbumDto Numero Pistas");
+        this.validateNotNull(albumDto.getGenero(), "AlbumDto Genero");
+        this.validateNotNull(albumDto.getSelloId(), "AlbumDto Sello Id");
     }
 }

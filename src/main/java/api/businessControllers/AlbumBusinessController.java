@@ -2,7 +2,7 @@ package api.businessControllers;
 
 import api.daos.DaoFactory;
 import api.dtos.AlbumDto;
-import api.dtos.AlbumIdNombreArtistaNumPistaDto;
+import api.dtos.AlbumQueryDto;
 import api.entities.Album;
 import api.entities.Genero;
 import api.entities.Sello;
@@ -27,10 +27,10 @@ public class AlbumBusinessController {
         DaoFactory.getFactory().getAlbumDao().save(album);
     }
 
-    public List<AlbumIdNombreArtistaNumPistaDto> findByNumPistasGreaterThanEqual(Double value) {
+    public List<AlbumQueryDto> findByNumPistasGreaterThanEqual(Double value) {
         return DaoFactory.getFactory().getAlbumDao().findAll().stream()
                 .filter(album -> album.getNumPistas() >= value)
-                .map(AlbumIdNombreArtistaNumPistaDto::new)
+                .map(AlbumQueryDto::new)
                 .collect(Collectors.toList());
     }
 }
