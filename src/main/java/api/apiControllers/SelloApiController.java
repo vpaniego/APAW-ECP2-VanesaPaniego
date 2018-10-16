@@ -3,11 +3,10 @@ package api.apiControllers;
 import api.businessControllers.SelloBusinessController;
 import api.dtos.SelloDto;
 import api.dtos.SelloIdNombreDto;
-import api.exceptions.ArgumentNotValidException;
 
 import java.util.List;
 
-public class SelloApiController extends ApiControllerValidateSupport{
+public class SelloApiController extends ApiControllerValidateSupport {
 
     public static final String SELLOS = "/sellos";
 
