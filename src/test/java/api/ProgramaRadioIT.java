@@ -88,7 +88,6 @@ public class ProgramaRadioIT {
         new Client().submit(request);
     }
 
-
     @Test
     void testAddAlbumesProgramaRadioIdNotFoundException() {
         List<String> albumesId = new ArrayList<String>();
@@ -106,14 +105,12 @@ public class ProgramaRadioIT {
     @Test
     void testAddAlbumesProgramaRadioWithoutAlbumes() {
         String programaRadioId = this.createProgramaRadio();
-         HttpRequest request = HttpRequest.builder().path(ProgramaRadioApiController.PROGRAMAS_RADIO).path(ProgramaRadioApiController.ID_ID)
+        HttpRequest request = HttpRequest.builder().path(ProgramaRadioApiController.PROGRAMAS_RADIO).path(ProgramaRadioApiController.ID_ID)
                 .expandPath(programaRadioId).path(ProgramaRadioApiController.ALBUMES).body(null).put();
 
         HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
-
-
 
     private String createSello() {
         HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).body(new SelloDto("Jerden", "Washington, Seattle")).post();
