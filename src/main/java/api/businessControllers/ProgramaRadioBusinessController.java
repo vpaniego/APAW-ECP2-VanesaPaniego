@@ -6,6 +6,9 @@ import api.entities.Album;
 import api.entities.ProgramaRadio;
 import api.exceptions.NotFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProgramaRadioBusinessController {
 
     public String create(ProgramaRadioDto programaRadioDto) {
@@ -14,5 +17,19 @@ public class ProgramaRadioBusinessController {
         programaRadio.addAlbum(album);
         DaoFactory.getFactory().getProgramaRadioDao().save(programaRadio);
         return programaRadio.getId();
+    }
+
+    public void addAlbumes(String programaRadioId, List<String> albumesId) {
+        List<Album> albumes = new ArrayList<Album>();
+        ProgramaRadio programaRadio = DaoFactory.getFactory().getProgramaRadioDao().read(programaRadioId)
+                .orElseThrow(() -> new NotFoundException("ProgramaRadio (" + programaRadioId + ")"));
+
+        for (String albumId : albumesId) {
+            Album album = DaoFactory.getFactory().getAlbumDao().read(albumId)
+                    .orElseThrow(() -> new NotFoundException("Album (" + albumId + ")"));
+            programaRadio.addAlbum(album);
+        }
+
+        DaoFactory.getFactory().getProgramaRadioDao().save(programaRadio);
     }
 }

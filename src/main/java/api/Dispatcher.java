@@ -15,6 +15,8 @@ import http.HttpRequest;
 import http.HttpResponse;
 import http.HttpStatus;
 
+import java.util.List;
+
 public class Dispatcher {
 
     static {
@@ -81,6 +83,8 @@ public class Dispatcher {
     private void doPut(HttpRequest request) {
         if (request.isEqualsPath(SelloApiController.SELLOS + SelloApiController.ID_ID)) {
             this.selloApiController.update(request.getPath(1), (SelloDto) request.getBody());
+        } else if (request.isEqualsPath(ProgramaRadioApiController.PROGRAMAS_RADIO + ProgramaRadioApiController.ID_ID +  ProgramaRadioApiController.ALBUMES)) {
+            this.programaRadioApiController.addAlbumes(request.getPath(1), (List<String>) request.getBody());
         } else {
             throw new RequestInvalidException(REQUEST_ERROR + request.getMethod());
         }

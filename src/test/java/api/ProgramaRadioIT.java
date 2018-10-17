@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Test;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -72,6 +74,44 @@ public class ProgramaRadioIT {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
     }
 
+    @Test
+    void testAddAlbumesProgramaRadio() {
+        List<String> albumesId = new ArrayList<String>();
+        for (int i = 0; i < 3; i++) {
+            albumesId.add(this.createAlbum());
+        }
+
+        String programaRadioId = this.createProgramaRadio();
+
+        HttpRequest request = HttpRequest.builder().path(ProgramaRadioApiController.PROGRAMAS_RADIO).path(ProgramaRadioApiController.ID_ID)
+                .expandPath(programaRadioId).path(ProgramaRadioApiController.ALBUMES).body(albumesId).put();
+        new Client().submit(request);
+    }
+
+    @Test
+    void testAddAlbumesProgramaRadioIdNotFoundException() {
+        List<String> albumesId = new ArrayList<String>();
+        for (int i = 0; i < 3; i++) {
+            albumesId.add(this.createAlbum());
+        }
+
+        HttpRequest request = HttpRequest.builder().path(ProgramaRadioApiController.PROGRAMAS_RADIO).path(ProgramaRadioApiController.ID_ID)
+                .expandPath("0196f6c4f97df3f48d570c23e46501ae").path(ProgramaRadioApiController.ALBUMES).body(albumesId).put();
+
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
+    }
+
+    @Test
+    void testAddAlbumesProgramaRadioWithoutAlbumes() {
+        String programaRadioId = this.createProgramaRadio();
+        HttpRequest request = HttpRequest.builder().path(ProgramaRadioApiController.PROGRAMAS_RADIO).path(ProgramaRadioApiController.ID_ID)
+                .expandPath(programaRadioId).path(ProgramaRadioApiController.ALBUMES).body(null).put();
+
+        HttpException exception = assertThrows(HttpException.class, () -> new Client().submit(request));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
+    }
+
     private String createSello() {
         HttpRequest request = HttpRequest.builder().path(SelloApiController.SELLOS).body(new SelloDto("Jerden", "Washington, Seattle")).post();
         return (String) new Client().submit(request).getBody();
@@ -81,6 +121,13 @@ public class ProgramaRadioIT {
         String selloId = this.createSello();
         HttpRequest request = HttpRequest.builder().path(AlbumApiController.ALBUMES)
                 .body(new AlbumDto("Introducing The Sonics", "The Sonics", LocalDateTime.of(1967, Month.MARCH, 10, 23, 12, 11), 12, Genero.GARAGE, selloId)).post();
+        return (String) new Client().submit(request).getBody();
+    }
+
+    private String createProgramaRadio() {
+        String albumId = this.createAlbum();
+        HttpRequest request = HttpRequest.builder().path(ProgramaRadioApiController.PROGRAMAS_RADIO)
+                .body(new ProgramaRadioDto("El Sotano", Boolean.FALSE, DayOfWeek.FRIDAY, albumId)).post();
         return (String) new Client().submit(request).getBody();
     }
 }

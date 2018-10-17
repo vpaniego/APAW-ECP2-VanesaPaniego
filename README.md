@@ -102,5 +102,13 @@
 #### Respuesta
 - 200 OK
 ---
+### PUT /programas-radio/{id}/albumes
+#### Parámetros del cuerpo
+- `albumesId`: List<String> (**requerido**)
+#### Respuesta
+- 200 OK
+- 403 BAD_REQUEST
+- 404 NOT_FOUND
+---
 
 ##### Autora: Vanesa Paniego Seco.
